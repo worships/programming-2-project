@@ -1,11 +1,14 @@
 from PyQt6.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QSizePolicy
 from components.webview import BaseWebView
+from components.toolbar import BrowserToolbar
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Browser")
         self.setGeometry(100, 100, 1024, 768) # 1024x768
+        
+        self.setMenuBar(BrowserToolbar(self))
         
         central_widget = QWidget()
         central_widget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
