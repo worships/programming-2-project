@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QMenu
+from PyQt6.QtWidgets import QMenu, QApplication
 
 class FileMenu(QMenu):
     def __init__(self, parent=None):
@@ -29,3 +29,4 @@ class FileMenu(QMenu):
         
         exit_action = self.addAction("Exit")
         exit_action.setShortcut("Alt+F4")
+        exit_action.triggered.connect(QApplication.quit)

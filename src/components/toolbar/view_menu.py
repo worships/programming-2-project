@@ -20,6 +20,7 @@ class ViewMenu(QMenu):
         status_bar = self.addAction("Status Bar")
         status_bar.setCheckable(True)
         status_bar.setChecked(True)
+        status_bar.triggered.connect(lambda checked: self.parent().parent().toggle_status_bar(checked))
         
         self.addSeparator()
         

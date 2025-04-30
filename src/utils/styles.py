@@ -1,11 +1,10 @@
-import os
+from pathlib import Path
 
 def load_stylesheet(name: str) -> str:
-    current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    style_path = os.path.join(current_dir, 'resources', 'styles', name)
+    current_dir = Path(__file__).parent.parent
+    style_path = current_dir / 'resources' / 'styles' / name
     
-    if not os.path.exists(style_path):
+    if not style_path.exists():
         return ""
         
-    with open(style_path, 'r') as f:
-        return f.read()
+    return style_path.read_text()

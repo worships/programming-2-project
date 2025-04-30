@@ -1,4 +1,5 @@
 from PyQt6.QtWidgets import QMenu, QMessageBox
+from PyQt6.QtCore import Qt
 
 class HelpMenu(QMenu):
     def __init__(self, parent=None):
@@ -7,15 +8,25 @@ class HelpMenu(QMenu):
         
     def _setup_menu(self):
         # not sure what else to add right now
-        self.addAction("action")
-        self.addSeparator()
+        #self.addAction("action")
+        #self.addSeparator()
         
         about = self.addAction("About Browser")
         about.triggered.connect(self._show_about_dialog)
         
     def _show_about_dialog(self):
-        QMessageBox.about(
-            self,
-            "About Browser",
-            "Pybrowser\nVersion 1.0\n© 2025"
-        )
+        about_box = QMessageBox(self)
+        about_box.setWindowTitle("About Browser")
+        about_box.setText("Pybrowser - Computer Programming 2 Final Project\nSean Coyne © 2025")
+        about_box.setStyleSheet("""
+            QMessageBox {
+                min-width: 300px;
+                width: 300px;
+                padding: 20px;
+            }
+            QMessageBox QLabel {
+                min-width: 300px;
+                width: 300px;
+            }
+        """)
+        about_box.exec()
