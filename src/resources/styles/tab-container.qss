@@ -1,0 +1,7 @@
+QWidget#tab-container {
+    background: #1e1e1e;
+}
+
+QTabWidget::pane {
+    background: #1e1e1e;
+}

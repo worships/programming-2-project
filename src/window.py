@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QSizePolicy, QStatusBar
-from components.webview import BaseWebView
 from components.toolbar import BrowserToolbar
-from components.searchbar.component import SearchBar
+from components.tabbar import BrowserTabWidget
+from components.webview import BaseWebView
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -22,26 +22,27 @@ class MainWindow(QMainWindow):
         layout = QVBoxLayout(central_widget)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(0)
+
+        self.tab_widget = BrowserTabWidget(self)
+        layout.addWidget(self.tab_widget)
         
-        self.web_view = BaseWebView(self)
-        self.web_view.statusMessage.connect(self.status_bar.showMessage)
+        container = self.tab_widget.currentWidget()
+        self.web_view = container.findChild(BaseWebView)
+        if self.web_view:
+            self.web_view.statusMessage.connect(self.status_bar.showMessage)
         
-        self.search_bar = SearchBar(self)
-        self.search_bar.omnibox.set_web_view(self.web_view)
-        
-        layout.addWidget(self.search_bar)
-        layout.addWidget(self.web_view)
-        
-        self.web_view.get_web_view().urlChanged.connect(
-            lambda url: self.search_bar.omnibox.update_url(url.url())
-        )
-        
-        # todo: allow user to change search engine
-        self.web_view.load_url("https://duckduckgo.com")
-    
+        self.tab_widget.currentChanged.connect(self._on_tab_changed)
+            
     def toggle_status_bar(self, checked):
         if checked:
             self.status_bar.show()
             self.status_bar.showMessage("Ready")
         else:
             self.status_bar.hide()
+            
+    def _on_tab_changed(self, index):
+        container = self.tab_widget.widget(index)
+        if container:
+            self.web_view = container.findChild(BaseWebView)
+            if self.web_view:
+                self.web_view.statusMessage.connect(self.status_bar.showMessage)
