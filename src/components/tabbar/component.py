@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QTabWidget, QWidget, QVBoxLayout, QStyle, QPushButton
+from PyQt6.QtWidgets import QTabWidget, QWidget, QVBoxLayout, QStyle, QPushButton, QTabBar, QLabel
 from PyQt6.QtCore import QSize, Qt
 from components.webview import BaseWebView
 from components.searchbar.component import SearchBar
@@ -26,29 +26,45 @@ class BrowserTabWidget(QTabWidget):
             QTabBar {{
                 qproperty-elideMode: ElideRight;
             }}
-        """)
-        
-        plus_button = QPushButton(self)
-        plus_button.setIcon(load_icon('plus.svg'))
-        plus_button.setFixedSize(32, 32)
-        plus_button.setStyleSheet("""
-            QPushButton {
-                background: #2d2d2d;
-                border: none;
+            QTabBar::tab:last {{
+                min-width: 32px;
+                max-width: 32px;
+                min-height: 32px;
+                max-height: 32px;
+                background: #1c1c1c;
                 border-radius: 6px;
                 margin: 2px;
-                padding: 4px;
-            }
-            QPushButton:hover {
+                padding: 2px;
+            }}
+            QTabBar::tab:last:hover {{
                 background: #353535;
-            }
+            }}
         """)
-        plus_button.clicked.connect(self.create_new_tab)
-        self.setCornerWidget(plus_button, Qt.Corner.TopRightCorner)
         
         self.setMovable(True)
         
+        self.tabBar().installEventFilter(self)
+        
+        plus_label = QLabel()
+        plus_icon = load_icon('plus.svg')
+        plus_label.setPixmap(plus_icon.pixmap(QSize(16, 16)))
+        plus_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        plus_label.setFixedSize(QSize(32, 32))
+        plus_label.setContentsMargins(8, 8, 8, 8)
+        
+        self.addTab(QWidget(), "")
+        self.tabBar().setTabButton(0, QTabBar.ButtonPosition.RightSide, None)
+        self.tabBar().setTabButton(0, QTabBar.ButtonPosition.LeftSide, plus_label)
+        
         self.create_new_tab()
+        
+    def eventFilter(self, obj, event):
+        if obj == self.tabBar() and event.type() == event.Type.MouseButtonPress:
+            index = self.tabBar().tabAt(event.pos())
+            if index != -1 and index == self.count() - 1:
+                self.create_new_tab()
+                return True
+        return super().eventFilter(obj, event)
         
     def create_new_tab(self):
         container = QWidget()
@@ -63,7 +79,8 @@ class BrowserTabWidget(QTabWidget):
         layout.addWidget(search_bar)
         layout.addWidget(web_view)
         
-        index = self.addTab(container, "New Tab")
+        index = self.count() - 1
+        index = self.insertTab(index, container, "New Tab")
         self.setCurrentIndex(index)
 
         web_view.get_web_view().titleChanged.connect(
@@ -79,10 +96,16 @@ class BrowserTabWidget(QTabWidget):
         return web_view
         
     def close_tab(self, index):
-        if self.count() > 1:
+        if self.count() > 2:
+            current_index = self.currentIndex()
+            
+            if index == current_index and index > 0:
+                self.setCurrentIndex(index - 1)
+                
             self.removeTab(index)
         
     def update_tab_title(self, title, web_view):
         for i in range(self.count()):
-            if web_view in self.widget(i).findChildren(BaseWebView):
-                self.setTabText(i, title or "New Tab")
+            if i < self.count() - 1:
+                if web_view in self.widget(i).findChildren(BaseWebView):
+                    self.setTabText(i, title or "New Tab")

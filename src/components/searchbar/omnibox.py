@@ -11,6 +11,7 @@ class Omnibox(QLineEdit):
 
     def set_web_view(self, web_view):
         self.web_view = web_view
+        self.web_view.get_web_view().urlChanged.connect(lambda url: self.update_url(url.toString()))
 
     def update_url(self, url):
         self.setText(url)
