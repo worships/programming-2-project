@@ -4,4 +4,84 @@ QWidget#tab-container {
 
 QTabWidget::pane {
     background: #1e1e1e;
+    border: none;
+}
+
+QTabBar::tab {
+    background: #2d2d2d;
+    color: #ffffff;
+    padding: 8px 32px 8px 16px;
+    margin: 2px 3px;
+    border-radius: 6px;
+    min-width: 100px;
+    max-width: 140px;
+    min-height: 18px;
+}
+
+QTabBar::tab:hover {
+    background: #353535;
+}
+
+QTabBar::tab:selected {
+    background: #3d3d3d;
+}
+
+QTabBar::tab:!selected:hover {
+    background: #353535;
+}
+
+QTabBar::close-button {
+    image: none;
+    width: 24px;
+    height: 24px;
+    margin-right: 2px;
+}
+
+QTabBar::close-button:hover {
+    background: #454545;
+    border-radius: 4px;
+}
+
+/* Add tab button styling */
+QTabBar::scroller {
+    width: 32px;
+}
+
+QTabBar QToolButton {
+    background: #2d2d2d;
+    border: none;
+    border-radius: 6px;
+    margin: 2px;
+}
+
+QTabBar QToolButton:hover {
+    background: #353535;
+}
+
+QTabBar QToolButton::right-arrow {
+    image: none;
+}
+
+QTabBar QToolButton::left-arrow {
+    image: none;
+}
+
+QTabBar::tear {
+    width: 0px;
+    border: none;
+}
+
+/* Add new tab button */
+QTabBar QToolButton#qt_tabs_addtab {
+    min-width: 32px;
+    max-width: 32px;
+    min-height: 28px;
+    margin: 2px;
+    padding: 4px;
+    background: #2d2d2d;
+    border-radius: 6px;
+    qproperty-text: "+";
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
 }

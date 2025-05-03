@@ -9,3 +9,8 @@ def load_icon(name: str) -> QIcon:
         return QIcon()
         
     return QIcon(str(icon_path))
+
+def get_icon_path(name: str) -> Path:
+    current_dir = Path(__file__).parent.parent
+    icon_path = current_dir / 'resources' / 'icons' / name
+    return icon_path
