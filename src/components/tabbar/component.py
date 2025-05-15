@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QTabWidget, QWidget, QVBoxLayout, QStyle, QPushButton, QTabBar, QLabel
+from PyQt6.QtWidgets import QTabWidget, QWidget, QVBoxLayout, QTabBar, QLabel
 from PyQt6.QtCore import QSize, Qt
 from components.webview import BaseWebView
 from components.searchbar.component import SearchBar
@@ -86,6 +86,9 @@ class BrowserTabWidget(QTabWidget):
         web_view.get_web_view().titleChanged.connect(
             lambda title, view=web_view: self.update_tab_title(title, view)
         )
+        web_view.get_web_view().iconChanged.connect(
+            lambda icon, view=web_view: self.update_tab_icon(icon, view)
+        )
 
         search_bar.omnibox.set_web_view(web_view)
         search_bar.controls.set_web_view(web_view)
@@ -109,3 +112,9 @@ class BrowserTabWidget(QTabWidget):
             if i < self.count() - 1:
                 if web_view in self.widget(i).findChildren(BaseWebView):
                     self.setTabText(i, title or "New Tab")
+
+    def update_tab_icon(self, icon, web_view):
+        for i in range(self.count()):
+            if i < self.count() - 1:
+                if web_view in self.widget(i).findChildren(BaseWebView):
+                    self.setTabIcon(i, icon)
