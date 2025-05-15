@@ -7,9 +7,8 @@ class HelpMenu(QMenu):
         self._setup_menu()
         
     def _setup_menu(self):
-        # not sure what else to add right now
-        #self.addAction("action")
-        #self.addSeparator()
+        self.addAction("Settings")
+        self.addSeparator()
         
         about = self.addAction("About Browser")
         about.triggered.connect(self._show_about_dialog)

@@ -1,4 +1,5 @@
 from PyQt6.QtWidgets import QMenu
+from utils.web.view_source import show_page_source
 
 class ViewMenu(QMenu):
     def __init__(self, parent=None):
@@ -24,7 +25,7 @@ class ViewMenu(QMenu):
         
         self.addSeparator()
         
-        text_size = self.addMenu("Text Size")
+        text_size = self.addMenu("Page Size")
         larger = text_size.addAction("Larger")
         larger.setShortcut("Ctrl++")
         smaller = text_size.addAction("Smaller")
@@ -33,3 +34,15 @@ class ViewMenu(QMenu):
         self.addSeparator()
         view_source = self.addAction("Page Source")
         view_source.setShortcut("Ctrl+U")
+        view_source.triggered.connect(self._view_page_source)
+        
+    def _view_page_source(self):
+        window = self.parent().parent()
+        if not window or not hasattr(window, 'web_view'):
+            return
+            
+        web_view = window.web_view
+        if not web_view:
+            return
+            
+        show_page_source(window, web_view)
