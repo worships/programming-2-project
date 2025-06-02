@@ -10,6 +10,8 @@ class EditMenu(QMenu):
         self._setup_menu()
         
     def _setup_menu(self):
+        # clipboard actions
+        # todo: fix these, they still dont work
         self.cut_action = QAction("Cut", self)
         self.cut_action.setShortcut("Ctrl+X")
         self.addAction(self.cut_action)
@@ -24,6 +26,7 @@ class EditMenu(QMenu):
         
         self.addSeparator()
         
+        # todo: make a find dialog
         find = self.addAction("Find...")
         find.setShortcut("Ctrl+F")
 

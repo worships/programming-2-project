@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QMenu, QApplication
+from PyQt6.QtWidgets import QMenu, QApplication, QFileDialog
 
 class FileMenu(QMenu):
     def __init__(self, parent=None):
@@ -22,6 +22,7 @@ class FileMenu(QMenu):
         
         save_as = self.addAction("Save Page As...")
         save_as.setShortcut("Ctrl+S")
+        save_as.triggered.connect(self._save_page_as)
         
         self.addSeparator()
         
@@ -43,3 +44,26 @@ class FileMenu(QMenu):
     def _new_tab(self):
         if self.window and hasattr(self.window, 'tab_widget'):
             self.window.tab_widget.create_new_tab()
+            
+    def _save_page_as(self):
+        if not self.window or not self.window.web_view:
+            return
+            
+        dialog = QFileDialog(self)
+        dialog.setWindowTitle("Save Page As")
+        dialog.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
+        dialog.setNameFilter("HTML Files (*.html *.htm);;All Files (*.*)")
+        dialog.setDefaultSuffix("html")
+        
+        if dialog.exec() == QFileDialog.DialogCode.Accepted:
+            selected_file = dialog.selectedFiles()[0]
+            
+            def handle_html(html):
+                try:
+                    with open(selected_file, 'w', encoding='utf-8') as f:
+                        f.write(html)
+                    self.window.status_bar.showMessage(f"Page saved to {selected_file}", 3000)
+                except Exception as e:
+                    self.window.status_bar.showMessage(f"Error saving page: {str(e)}", 3000)
+            
+            self.window.web_view.get_web_view().page().toHtml(handle_html)

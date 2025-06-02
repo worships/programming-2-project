@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QSizePolicy, QSta
 from components.toolbar import BrowserToolbar
 from components.tabbar import BrowserTabWidget
 from components.webview import BaseWebView
+from utils.settings import settings
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -11,7 +12,12 @@ class MainWindow(QMainWindow):
         
         self.status_bar = QStatusBar()
         self.setStatusBar(self.status_bar)
-        self.status_bar.showMessage("Ready")
+        
+        if settings.get("settings", "enable_status_bar", default=True):
+            self.status_bar.show()
+            self.status_bar.showMessage("Ready")
+        else:
+            self.status_bar.hide()
         
         self.setMenuBar(BrowserToolbar(self))
         
@@ -39,6 +45,8 @@ class MainWindow(QMainWindow):
             self.status_bar.showMessage("Ready")
         else:
             self.status_bar.hide()
+        
+            settings.set("settings", "enable_status_bar", value=checked)
             
     def _on_tab_changed(self, index):
         container = self.tab_widget.widget(index)

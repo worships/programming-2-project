@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QSizePolicy
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtCore import QUrl, pyqtSignal, Qt
 from PyQt6.QtGui import QKeySequence, QShortcut
+import os
 
 class BaseWebView(QWidget):
     statusMessage = pyqtSignal(str)
@@ -15,7 +16,13 @@ class BaseWebView(QWidget):
         self._setup_signals()
         self._setup_shortcuts()
 
+        # this is supposed to let the user copy & paste but literally it didnt work
         self._web_view.settings().setAttribute(self._web_view.settings().WebAttribute.JavascriptCanAccessClipboard, True)
+
+        # set chromium flags
+        # i only care about proxy settings really, maybe ill add a setting that allows the user to specify other flags
+        # todo: allow user to specify proxy settings
+        os.environ["QTWEBENGINE_CHROMIUM_FLAGS"] = f"--proxy-server=http="
         
     def _setup_ui(self):
         layout = QVBoxLayout(self)

@@ -31,6 +31,7 @@
 <body>
     <pre><code class="html">{source}</code></pre>
     <script>
+        // render code with highlighting
         document.addEventListener('DOMContentLoaded', (event) => {
             document.querySelectorAll('pre code').forEach((block) => {
                 hljs.highlightBlock(block);

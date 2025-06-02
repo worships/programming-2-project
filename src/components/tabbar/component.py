@@ -45,6 +45,7 @@ class BrowserTabWidget(QTabWidget):
         
         self.tabBar().installEventFilter(self)
         
+        # create the new tab button
         plus_label = QLabel()
         plus_icon = load_icon('plus.svg')
         plus_label.setPixmap(plus_icon.pixmap(QSize(16, 16)))

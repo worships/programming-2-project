@@ -25,7 +25,7 @@ class Omnibox(QLineEdit):
             if not query.startswith(('http://', 'https://')):
                 query = 'https://' + query
         else:
-            # todo: allow user to change search engine
+            # change based on users search engine from settings
             query = f'https://duckduckgo.com/?q={query}'
 
         self.web_view.load_url(query)
