@@ -1,5 +1,7 @@
 from PyQt6.QtWidgets import QLineEdit
 from PyQt6.QtCore import Qt
+from utils.settings import settings
+from urllib.parse import quote
 
 class Omnibox(QLineEdit):
     def __init__(self, parent=None):
@@ -25,7 +27,7 @@ class Omnibox(QLineEdit):
             if not query.startswith(('http://', 'https://')):
                 query = 'https://' + query
         else:
-            # change based on users search engine from settings
-            query = f'https://duckduckgo.com/?q={query}'
+            search_engine = settings.get("settings", "search_engine", default="https://duckduckgo.com")
+            query = f'{search_engine}?q={quote(query)}'
 
         self.web_view.load_url(query)

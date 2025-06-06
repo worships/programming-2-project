@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import QWidget, QHBoxLayout, QPushButton
 from PyQt6.QtCore import Qt
 from utils.icons import load_icon
 from utils.styles import load_stylesheet
+from utils.settings import settings
 
 class SecondaryControls(QWidget):
     def __init__(self, parent=None):
@@ -32,6 +33,5 @@ class SecondaryControls(QWidget):
         self.web_view = web_view
         
         if self.web_view:
-
-            # todo: allow user to change search engine
-            self.home_button.clicked.connect(lambda: self.web_view.load_url("https://duckduckgo.com"))
+            home_page = settings.get("settings", "home_page")
+            self.home_button.clicked.connect(lambda: self.web_view.load_url(home_page))

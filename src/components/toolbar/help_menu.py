@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import QMenu, QMessageBox
 from PyQt6.QtCore import Qt
+from components.settings import SettingsDialog
 
 class HelpMenu(QMenu):
     def __init__(self, parent=None):
@@ -7,11 +8,16 @@ class HelpMenu(QMenu):
         self._setup_menu()
         
     def _setup_menu(self):
-        self.addAction("Settings")
+        settings = self.addAction("Settings")
+        settings.triggered.connect(self._show_settings)
         self.addSeparator()
         
         about = self.addAction("About Browser")
         about.triggered.connect(self._show_about_dialog)
+        
+    def _show_settings(self):
+        dialog = SettingsDialog(self)
+        dialog.exec()
         
     def _show_about_dialog(self):
         about_box = QMessageBox(self)

@@ -1,0 +1,16 @@
+{
+    "settings": {
+        "download_path": "C:\\Users\\thewa\\Downloads",
+        "enable_bookmarks_bar": true,
+        "enable_cookies": true,
+        "enable_javascript": true,
+        "enable_status_bar": true,
+        "font_size": 14,
+        "home_page": "https://duckduckgo.com",
+        "proxy": {
+            "enabled": false,
+            "server": ""
+        },
+        "search_engine": "https://duckduckgo.com"
+    }
+}

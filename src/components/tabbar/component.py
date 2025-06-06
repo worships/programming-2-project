@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import QTabWidget, QWidget, QVBoxLayout, QTabBar, QLabel
 from PyQt6.QtCore import QSize, Qt
 from components.webview import BaseWebView
 from components.searchbar.component import SearchBar
+from utils.settings import settings
 from utils.styles import load_stylesheet
 from utils.icons import get_icon_path, load_icon
 
@@ -96,7 +97,8 @@ class BrowserTabWidget(QTabWidget):
         search_bar.secondary_controls.set_web_view(web_view)
 
         # todo: allow user to change search engine
-        web_view.load_url("https://duckduckgo.com")
+        home_page = settings.get("settings", "home_page")
+        web_view.load_url(home_page)
         return web_view
         
     def close_tab(self, index):
